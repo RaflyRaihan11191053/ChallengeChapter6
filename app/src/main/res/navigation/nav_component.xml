@@ -61,6 +61,9 @@
         <action
             android:id="@+id/action_detailFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <argument
+            android:name="id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/wishlistFragment"
@@ -88,5 +91,8 @@
         <action
             android:id="@+id/action_profileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <argument
+            android:name="user"
+            app:argType="com.example.challengechapter5.model.User" />
     </fragment>
 </navigation>
