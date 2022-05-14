@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.challengechapter5.model.User
@@ -16,22 +17,25 @@ import com.example.challengechapter5.model.UserDatabase
 import com.example.challengechapter6.R
 import com.example.challengechapter6.databinding.FragmentProfileBinding
 import com.example.challengechapter6.databinding.FragmentWishlistBinding
+import com.example.challengechapter6.datastore.UserManager
 import com.example.challengechapter6.viewmodel.HomeViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import com.example.challengechapter6.viewmodel.UserViewModel
+import com.example.challengechapter6.viewmodel.ViewModelFactory
+import kotlinx.coroutines.*
 
 class ProfileFragment : Fragment() {
 
     lateinit var viewModel: HomeViewModel
+    private lateinit var userViewModel: UserViewModel
 
     private var myDB: UserDatabase?= null
 
     private var _binding: FragmentProfileBinding?= null
     private val binding get() = _binding!!
 
-    val sharedPreferences = "sharedPreferences"
+    private lateinit var pref: UserManager
+
+//    val sharedPreferences = "sharedPreferences"
 
     private val args: ProfileFragmentArgs by navArgs()
 
@@ -46,18 +50,23 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val profileScreen: SharedPreferences = requireActivity().getSharedPreferences(sharedPreferences, Context.MODE_PRIVATE)
+//        val profileScreen: SharedPreferences = requireActivity().getSharedPreferences(sharedPreferences, Context.MODE_PRIVATE)
 
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        userViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[UserViewModel::class.java]
+        pref = UserManager(requireContext())
 
         binding.ivBack.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
         }
 
         binding.btnLogout.setOnClickListener {
-            val editor: SharedPreferences.Editor = profileScreen.edit()
-            editor.clear()
-            editor.apply()
+//            val editor: SharedPreferences.Editor = profileScreen.edit()
+//            editor.clear()
+//            editor.apply()
+            lifecycleScope.launch(Dispatchers.IO) {
+                pref.deleteUserFromPref()
+            }
             findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
 
@@ -68,7 +77,6 @@ class ProfileFragment : Fragment() {
         binding.etPasswordEdit.setText(args.user.password)
 
         binding.btnEdit.setOnClickListener {
-
             val objectUser = User(
                 args.user.id,
                 binding.etUsernameEdit.text.toString(),
@@ -79,12 +87,12 @@ class ProfileFragment : Fragment() {
                 val result = myDB?.userDao()?.updateProfile(objectUser)
                 runBlocking(Dispatchers.Main) {
                     if (result != 0) {
-                        viewModel.getDataUser(objectUser)
-                        val editor: SharedPreferences.Editor = profileScreen.edit()
-                        editor.putString("username", binding.etUsernameEdit.text.toString())
-                        editor.putString("email", binding.etEmailEdit.text.toString())
-                        editor.putString("password", binding.etPasswordEdit.text.toString())
-                        editor.apply()
+                        userViewModel.setDataUser(objectUser)
+//                        val editor: SharedPreferences.Editor = profileScreen.edit()
+//                        editor.putString("username", binding.etUsernameEdit.text.toString())
+//                        editor.putString("email", binding.etEmailEdit.text.toString())
+//                        editor.putString("password", binding.etPasswordEdit.text.toString())
+//                        editor.apply()
                         Toast.makeText(requireContext(), "Sukses mengubah profil user", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_profileFragment_to_homeFragment)
                     } else {
@@ -93,6 +101,11 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+
+        binding.ibAdd.setOnClickListener {
+
+        }
+
     }
 
 }
