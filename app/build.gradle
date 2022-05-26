@@ -25,6 +25,41 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "lapak"
+    productFlavors{
+        Bukapalak{
+            applicationId "com.example.bukapalak"
+            dimension "lapak"
+            versionCode 1
+            versionName "1.0"
+        }
+        Sukabapak{
+            applicationId "com.example.sukabapak"
+            dimension "lapak"
+            versionCode 1
+            versionName "1.0"
+        }
+    }
+
+    sourceSets{
+        Bukapalak{
+            res{
+                srcDirs 'src/Bukapalak/res'
+            }
+            java{
+                srcDirs 'src/Bukapalak/java'
+            }
+        }
+        Sukabapak{
+            res{
+                srcDirs 'src/Sukabapak/res'
+            }
+            java{
+                srcDirs 'src/Sukabapak/java'
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
