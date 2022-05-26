@@ -57,10 +57,9 @@ class HomeFragment : Fragment() {
 //        sharedPreferences = requireActivity().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
 
         showList()
-        getUser()
 
         binding.ivProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+            getUser()
         }
 
         userViewModel.userSession.observe(viewLifecycleOwner, Observer {
@@ -94,14 +93,12 @@ class HomeFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val user = myDB?.userDao()?.getUser(it.username, it.password)
                 if (user != null) {
-                    val data = User(user.id, user.username, user.email, user.password)
+                    val data = User(user.id, user.username, user.email, user.password, "")
                     viewModel.getDataUser(data)
-                    binding.ivProfile.setOnClickListener {
-                        val direct = HomeFragmentDirections.actionHomeFragmentToProfileFragment(data)
-                        findNavController().navigate(direct)
-                    }
                 }
             }
+            val direct = HomeFragmentDirections.actionHomeFragmentToProfileFragment(it)
+            findNavController().navigate(direct)
         }
     }
 

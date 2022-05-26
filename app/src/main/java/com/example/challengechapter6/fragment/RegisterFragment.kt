@@ -55,7 +55,9 @@ class RegisterFragment : Fragment() {
                         User(null,
                             binding.etUsernameRegister.text.toString(),
                             binding.etEmailRegister.text.toString(),
-                            binding.etPasswordRegister.text.toString())
+                            binding.etPasswordRegister.text.toString(),
+                            ""
+                        )
                     )
                     runBlocking(Dispatchers.Main) {
                         if (result != 0.toLong()){

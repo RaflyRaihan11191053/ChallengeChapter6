@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.challengechapter5.model.GetAllItemSell
 import com.example.challengechapter5.model.UserDatabase
-import com.example.challengechapter5.service.ApiClient
 import com.example.challengechapter6.model.Wishlist
 import retrofit2.Call
 import retrofit2.Callback

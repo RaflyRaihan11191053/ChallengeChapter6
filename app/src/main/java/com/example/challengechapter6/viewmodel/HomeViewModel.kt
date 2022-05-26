@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.challengechapter5.model.GetAllItemSell
 import com.example.challengechapter5.model.User
-import com.example.challengechapter5.service.ApiClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

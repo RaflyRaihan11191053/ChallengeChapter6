@@ -8,7 +8,7 @@ import com.example.challengechapter6.model.Wishlist
 interface WishlistDao {
 
     @Query("SELECT * FROM Wishlist")
-    suspend fun getWishlist(): List<Wishlist>
+    fun getWishlist(): List<Wishlist>
 
     @Query("SELECT * FROM Wishlist WHERE id = :id")
     fun getWishListById(id: Int): Wishlist?
