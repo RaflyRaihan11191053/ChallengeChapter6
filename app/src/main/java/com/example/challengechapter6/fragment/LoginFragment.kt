@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.challengechapter5.model.UserDatabase
 import com.example.challengechapter6.R
@@ -17,10 +18,7 @@ import com.example.challengechapter6.databinding.FragmentWishlistBinding
 import com.example.challengechapter6.datastore.UserManager
 import com.example.challengechapter6.viewmodel.UserViewModel
 import com.example.challengechapter6.viewmodel.ViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class LoginFragment : Fragment() {
 
@@ -59,7 +57,7 @@ class LoginFragment : Fragment() {
             } else if (binding.etPasswordLogin.text.isNullOrEmpty()){
                 binding.etPasswordLogin.error = "Masukkan Password kamu"
             } else {
-                GlobalScope.async {
+                lifecycleScope.launch(Dispatchers.IO) {
                     val result = myDB?.userDao()?.getUser(binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString())
                     runBlocking(Dispatchers.Main) {
                         if (result == null){

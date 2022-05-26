@@ -26,12 +26,13 @@ class WishlistFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: WishlistViewModel
+    private lateinit var pref: UserDatabase
 
-    private val wishlistViewModel by viewModels<WishlistViewModel> {
-        WishlistViewModelFactory(
-            UserDatabase.getInstance(requireContext())!!
-        )
-    }
+//    private val wishlistViewModel by viewModels<WishlistViewModel> {
+//        WishlistViewModelFactory(
+//            UserDatabase.getInstance(requireContext())!!
+//        )
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,17 +45,18 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(WishlistViewModel::class.java)
+        pref = UserDatabase.getInstance(requireContext())!!
+        viewModel = ViewModelProvider(requireActivity(), WishlistViewModelFactory(pref))[WishlistViewModel::class.java]
 
-        wishlistViewModel.allWishlist.observe(viewLifecycleOwner) {
+        viewModel.getAllWishlist()
+
+        viewModel.allWishlist.observe(viewLifecycleOwner) {
             showAllWishlist(it)
         }
 
         binding.ivBack.setOnClickListener {
             findNavController().navigate(R.id.action_wishlistFragment_to_homeFragment)
         }
-
-        wishlistViewModel.getAllWishlist()
 
     }
 
@@ -63,9 +65,9 @@ class WishlistFragment : Fragment() {
         viewModel.allWishlist.observe(viewLifecycleOwner, Observer {
                 data -> (binding.rvWishlist.adapter as AdapterWishlist).itemsData(data)
         })
-        binding.rvWishlist.adapter = AdapterItem {
+        binding.rvWishlist.adapter = AdapterWishlist {
             val id = it
-            val sent = HomeFragmentDirections.actionHomeFragmentToDetailFragment(id)
+            val sent = WishlistFragmentDirections.actionWishlistFragmentToDetailFragment(id)
             findNavController().navigate(sent)
         }
     }

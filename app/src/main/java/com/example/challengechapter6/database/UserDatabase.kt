@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.challengechapter6.database.WishlistDao
 import com.example.challengechapter6.model.Wishlist
 
-@Database(entities = [User::class, Wishlist::class], version = 1)
+@Database(entities = [User::class, Wishlist::class], version = 2)
 abstract class UserDatabase: RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -20,7 +20,7 @@ abstract class UserDatabase: RoomDatabase() {
             if (INSTANCE == null) {
                 synchronized(UserDatabase::class){
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
-                        UserDatabase::class.java, "user.db").build()
+                        UserDatabase::class.java, "user.db").fallbackToDestructiveMigration().build()
                 }
             }
             return INSTANCE

@@ -6,16 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.challengechapter5.model.User
 import com.example.challengechapter5.model.UserDatabase
 import com.example.challengechapter6.R
 import com.example.challengechapter6.databinding.FragmentRegisterBinding
 import com.example.challengechapter6.databinding.FragmentWishlistBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class RegisterFragment : Fragment() {
 
@@ -52,7 +50,7 @@ class RegisterFragment : Fragment() {
             } else if (binding.etConfirmPassword.text.isNullOrEmpty()) {
                 binding.etConfirmPassword.error = "Konfirmasi Password kamu"
             } else {
-                GlobalScope.async {
+                lifecycleScope.launch(Dispatchers.IO) {
                     val result = myDB?.userDao()?.register(
                         User(null,
                             binding.etUsernameRegister.text.toString(),

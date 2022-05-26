@@ -10,7 +10,7 @@ import com.example.challengechapter5.model.GetAllItemSell
 import com.example.challengechapter6.databinding.DetailItemBinding
 import com.example.challengechapter6.model.Wishlist
 
-class AdapterWishlist(private val onItemClick: (Int?) -> Unit): RecyclerView.Adapter<AdapterWishlist.ViewHolder>() {
+class AdapterWishlist(private val onItemClick: (Int) -> Unit): RecyclerView.Adapter<AdapterWishlist.ViewHolder>() {
 
     inner class ViewHolder(private val binding: DetailItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Wishlist){

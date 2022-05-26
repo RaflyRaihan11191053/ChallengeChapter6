@@ -52,9 +52,9 @@ class ProfileFragment : Fragment() {
 
 //        val profileScreen: SharedPreferences = requireActivity().getSharedPreferences(sharedPreferences, Context.MODE_PRIVATE)
 
+        pref = UserManager(requireContext())
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         userViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[UserViewModel::class.java]
-        pref = UserManager(requireContext())
 
         binding.ivBack.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_homeFragment)

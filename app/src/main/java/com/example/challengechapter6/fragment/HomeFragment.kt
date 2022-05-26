@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
         }
 
-        userViewModel.getDataUser().observe(viewLifecycleOwner, Observer {
+        userViewModel.userSession.observe(viewLifecycleOwner, Observer {
             binding.tvUsername.text = it.username
         })
 
@@ -90,7 +90,7 @@ class HomeFragment : Fragment() {
 //        sharedPreferences = requireContext().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
 //        val username = sharedPreferences.getString("username", null)
 //        val password = sharedPreferences.getString("password", null)
-        userViewModel.getDataUser().observe(viewLifecycleOwner) {
+        userViewModel.userSession.observe(viewLifecycleOwner) {
             lifecycleScope.launch(Dispatchers.IO) {
                 val user = myDB?.userDao()?.getUser(it.username, it.password)
                 if (user != null) {
