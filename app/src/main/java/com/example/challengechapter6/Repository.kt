@@ -17,11 +17,11 @@ class Repository(private val apiHelper: ApiHelper, private val databaseHelper: D
     suspend fun addWishList(wishlist: Wishlist) = databaseHelper.addWishList(wishlist)
     suspend fun deleteWishList(wishlist: Wishlist) = databaseHelper.deleteWishList(wishlist)
 
+
     suspend fun setUser(user: User) = userManager.setUser(user)
-    suspend fun getUser(): Flow<User> = userManager.getUser()
+    suspend fun getUserFromPref(): Flow<User> = userManager.getUser()
     suspend fun deleteUser() = userManager.deleteUserFromPref()
 
-    suspend fun getUser(username: String, password: String) = databaseHelper.getUser(username, password)
     suspend fun login(username: String, password: String) = databaseHelper.login(username, password)
     suspend fun register(user: User) = databaseHelper.register(user)
     suspend fun updateProfile(user: User) = databaseHelper.updateProfile(user)

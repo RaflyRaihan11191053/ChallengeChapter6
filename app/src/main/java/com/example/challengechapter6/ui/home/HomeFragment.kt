@@ -1,7 +1,5 @@
-package com.example.challengechapter6.fragment
+package com.example.challengechapter6.ui.home
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,21 +14,19 @@ import com.example.challengechapter5.model.UserDatabase
 import com.example.challengechapter6.R
 import com.example.challengechapter6.adapter.AdapterItem
 import com.example.challengechapter6.databinding.FragmentHomeBinding
-import com.example.challengechapter6.databinding.FragmentWishlistBinding
 import com.example.challengechapter6.datastore.UserManager
-import com.example.challengechapter6.viewmodel.HomeViewModel
-import com.example.challengechapter6.viewmodel.UserViewModel
-import com.example.challengechapter6.viewmodel.ViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
-    private var myDB: UserDatabase?= null
+//    private var myDB: UserDatabase?= null
+//
+//    private lateinit var fragmentViewModel: HomeFragmentViewModel
+//    private lateinit var userViewModel: UserViewModel
 
-    private lateinit var viewModel: HomeViewModel
-    private lateinit var userViewModel: UserViewModel
+    private val viewModel: HomeFragmentViewModel by viewModel()
 
     private var _binding: FragmentHomeBinding?= null
     private val binding get() = _binding!!
@@ -50,19 +46,25 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pref = UserManager(requireContext())
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        userViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[UserViewModel::class.java]
+//        pref = UserManager(requireContext())
+//        fragmentViewModel = ViewModelProvider(this).get(HomeFragmentViewModel::class.java)
+//        userViewModel = ViewModelProvider(requireActivity(), ViewModelFactory(pref))[UserViewModel::class.java]
 
 //        sharedPreferences = requireActivity().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
 
         showList()
+        viewModel.getDataUser()
 
         binding.ivProfile.setOnClickListener {
-            getUser()
+            viewModel.userSession.observe(viewLifecycleOwner) { user ->
+//            val user = myDB?.userDao()?.getUser()
+//            val data = User(user.id, user.username, user.email, user.password, "")
+                val direct = HomeFragmentDirections.actionHomeFragmentToProfileFragment(user)
+                findNavController().navigate(direct)
+            }
         }
 
-        userViewModel.userSession.observe(viewLifecycleOwner, Observer {
+        viewModel.userSession.observe(viewLifecycleOwner, Observer {
             binding.tvUsername.text = it.username
         })
 
@@ -74,7 +76,7 @@ class HomeFragment : Fragment() {
 
     private fun showList() {
         viewModel.getAllItem()
-        viewModel.item.observe(viewLifecycleOwner, Observer {
+        viewModel.home.observe(viewLifecycleOwner, Observer {
                 data -> (binding.rvBukapalak.adapter as AdapterItem).itemsData(data)
         })
         binding.rvBukapalak.adapter = AdapterItem {
@@ -84,22 +86,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getUser() {
-        myDB = UserDatabase.getInstance(requireContext())
-//        sharedPreferences = requireContext().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
-//        val username = sharedPreferences.getString("username", null)
-//        val password = sharedPreferences.getString("password", null)
-        userViewModel.userSession.observe(viewLifecycleOwner) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val user = myDB?.userDao()?.getUser(it.username, it.password)
-                if (user != null) {
-                    val data = User(user.id, user.username, user.email, user.password, "")
-                    viewModel.getDataUser(data)
-                }
-            }
-            val direct = HomeFragmentDirections.actionHomeFragmentToProfileFragment(it)
-            findNavController().navigate(direct)
-        }
-    }
+//    private fun getUser() {
+////        myDB = UserDatabase.getInstance(requireContext())
+////        sharedPreferences = requireContext().getSharedPreferences("sharedPreferences", Context.MODE_PRIVATE)
+////        val username = sharedPreferences.getString("username", null)
+////        val password = sharedPreferences.getString("password", null)
+//    }
 
 }

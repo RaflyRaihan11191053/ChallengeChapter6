@@ -6,14 +6,14 @@ import com.example.challengechapter6.model.Wishlist
 
 class DatabaseHelper(private val userDao: UserDao, private val wishlistDao: WishlistDao) {
 
-    fun login(username: String, password: String) = userDao.login(username, password)
-    fun register(user: User) = userDao.register(user)
-    fun getUser(username: String, password: String) = userDao.getUser(username, password)
-    fun updateProfile(user: User) = userDao.updateProfile(user)
+    suspend fun login(username: String, password: String) = userDao.login(username, password)
+    suspend fun register(user: User) = userDao.register(user)
+//    suspend fun getUser(username: String, password: String) = userDao.getUser(username, password)
+    suspend fun updateProfile(user: User) = userDao.updateProfile(user)
 
-    fun getWishlist() = wishlistDao.getWishlist()
-    fun getWishListById(id: Int) = wishlistDao.getWishListById(id)
-    fun addWishList(wishlist: Wishlist) = wishlistDao.addWishlist(wishlist)
-    fun deleteWishList(wishlist: Wishlist) = wishlistDao.deleteWishlist(wishlist)
+    suspend fun getWishlist() = wishlistDao.getWishlist()
+    suspend fun getWishListById(id: Int) = wishlistDao.getWishListById(id)
+    suspend fun addWishList(wishlist: Wishlist) = wishlistDao.addWishlist(wishlist)
+    suspend fun deleteWishList(wishlist: Wishlist) = wishlistDao.deleteWishlist(wishlist)
 
 }

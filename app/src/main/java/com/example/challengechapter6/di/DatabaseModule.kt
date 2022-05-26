@@ -12,7 +12,7 @@ val databaseModule = module {
         Room.databaseBuilder(
             androidContext().applicationContext,
                 UserDatabase::class.java,
-            "covidDatabase"
+            "BukapalakDatabase"
         ).fallbackToDestructiveMigration().build()
     }
     single {

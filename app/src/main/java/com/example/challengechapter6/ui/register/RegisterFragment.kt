@@ -1,4 +1,4 @@
-package com.example.challengechapter6.fragment
+package com.example.challengechapter6.ui.register
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,12 +12,14 @@ import com.example.challengechapter5.model.User
 import com.example.challengechapter5.model.UserDatabase
 import com.example.challengechapter6.R
 import com.example.challengechapter6.databinding.FragmentRegisterBinding
-import com.example.challengechapter6.databinding.FragmentWishlistBinding
 import kotlinx.coroutines.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : Fragment() {
 
-    private var myDB: UserDatabase?= null
+//    private var myDB: UserDatabase?= null
+
+    private val viewModel: RegisterFragmentViewModel by viewModel()
 
     private var _binding: FragmentRegisterBinding?= null
     private val binding get() = _binding!!
@@ -32,8 +34,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        myDB = UserDatabase.getInstance(requireContext())
 
         binding.btnRegister.setOnClickListener {
             if (binding.etUsernameRegister.text.isNullOrEmpty() &&
@@ -50,22 +50,21 @@ class RegisterFragment : Fragment() {
             } else if (binding.etConfirmPassword.text.isNullOrEmpty()) {
                 binding.etConfirmPassword.error = "Konfirmasi Password kamu"
             } else {
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val result = myDB?.userDao()?.register(
-                        User(null,
-                            binding.etUsernameRegister.text.toString(),
-                            binding.etEmailRegister.text.toString(),
-                            binding.etPasswordRegister.text.toString(),
-                            ""
-                        )
+                viewModel.register(
+                    User(null,
+                        binding.etUsernameRegister.text.toString(),
+                        binding.etEmailRegister.text.toString(),
+                        binding.etPasswordRegister.text.toString(),
+                        ""
                     )
-                    runBlocking(Dispatchers.Main) {
-                        if (result != 0.toLong()){
-                            Toast.makeText(activity, "Berhasil Sign Up", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-                        } else {
-                            Toast.makeText(activity, "Gagal Sign Up", Toast.LENGTH_SHORT).show()
-                        }
+                )
+//                  val result = myDB?.userDao()?.getUser(binding.etUsernameLogin.text.toString(), binding.etPasswordLogin.text.toString())
+                viewModel.register.observe(viewLifecycleOwner){
+                    if (it != 0.toLong()){
+                        Toast.makeText(activity, "Berhasil Sign Up", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                    } else {
+                        Toast.makeText(activity, "Gagal Sign Up", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
