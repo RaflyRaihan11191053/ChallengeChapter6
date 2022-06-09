@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">ChallengeChapter6</string>
+    <string name="app_name">Bukapalak</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login_compose">LoginCompose</string>
+    <string name="title_activity_register_compose">RegisterCompose</string>
 </resources>

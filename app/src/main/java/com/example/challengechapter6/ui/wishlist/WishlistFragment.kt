@@ -1,32 +1,29 @@
-package com.example.challengechapter6.fragment
+package com.example.challengechapter6.ui.wishlist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.challengechapter5.model.UserDatabase
 import com.example.challengechapter6.R
-import com.example.challengechapter6.adapter.AdapterItem
 import com.example.challengechapter6.adapter.AdapterWishlist
 import com.example.challengechapter6.databinding.FragmentWishlistBinding
 import com.example.challengechapter6.model.Wishlist
-import com.example.challengechapter6.viewmodel.HomeViewModel
-import com.example.challengechapter6.viewmodel.ViewModelFactory
-import com.example.challengechapter6.viewmodel.WishlistViewModel
-import com.example.challengechapter6.viewmodel.WishlistViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class WishlistFragment : Fragment() {
 
     private var _binding: FragmentWishlistBinding?= null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: WishlistViewModel
-    private lateinit var pref: UserDatabase
+    private val viewModel: WishlistFragmentViewModel by viewModel()
+
+//    private lateinit var viewModel: WishlistViewModel
+//    private lateinit var pref: UserDatabase
 
 //    private val wishlistViewModel by viewModels<WishlistViewModel> {
 //        WishlistViewModelFactory(
@@ -45,10 +42,10 @@ class WishlistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pref = UserDatabase.getInstance(requireContext())!!
-        viewModel = ViewModelProvider(requireActivity(), WishlistViewModelFactory(pref))[WishlistViewModel::class.java]
+//        pref = UserDatabase.getInstance(requireContext())!!
+//        viewModel = ViewModelProvider(requireActivity(), WishlistViewModelFactory(pref))[WishlistViewModel::class.java]
 
-        viewModel.getAllWishlist()
+        viewModel.getWishlist()
 
         viewModel.allWishlist.observe(viewLifecycleOwner) {
             showAllWishlist(it)
@@ -61,7 +58,7 @@ class WishlistFragment : Fragment() {
     }
 
     private fun showAllWishlist(it: List<Wishlist>?) {
-        viewModel.getAllWishlist()
+        viewModel.getWishlist()
         viewModel.allWishlist.observe(viewLifecycleOwner, Observer {
                 data -> (binding.rvWishlist.adapter as AdapterWishlist).itemsData(data)
         })

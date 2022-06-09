@@ -7,10 +7,10 @@ import retrofit2.http.*
 interface ApiService {
 
     @GET("products")
-    fun getAllItems(): Call<List<GetAllItemSell>>
+    suspend fun getAllItems(): List<GetAllItemSell>
 
     @GET("products/{id}")
-    fun getDetailItems(@Path ("id") id: Int): Call<GetAllItemSell>
+    suspend fun getDetailItems(@Path ("id") id: Int): GetAllItemSell
 
 //    @POST("products")
 //    fun postItem(@Body request: PostAnItemRequest): Call<PostAnItemResponse>

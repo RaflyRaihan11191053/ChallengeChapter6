@@ -11,12 +11,12 @@ interface WishlistDao {
     suspend fun getWishlist(): List<Wishlist>
 
     @Query("SELECT * FROM Wishlist WHERE id = :id")
-    fun getWishListById(id: Int): Wishlist?
+    suspend fun getWishListById(id: Int): Wishlist?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addWishlist(wishlist: Wishlist): Long?
+    suspend fun addWishlist(wishlist: Wishlist): Long?
 
     @Delete
-    fun deleteWishlist(wishlist: Wishlist): Int?
+    suspend fun deleteWishlist(wishlist: Wishlist): Int?
 
 }

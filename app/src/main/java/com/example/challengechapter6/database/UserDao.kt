@@ -4,15 +4,15 @@ import androidx.room.*
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM User WHERE username = :username AND password = :password")
-    fun login(username: String, password: String): Boolean
+//    @Query("SELECT * FROM User WHERE username = :username AND password = :password")
+//    suspend fun login(username: String, password: String): Boolean
 
     @Query("SELECT * FROM User WHERE username = :username AND password = :password")
-    fun getUser(username: String, password: String): User?
+    suspend fun login(username: String, password: String): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun register(user: User): Long
+    suspend fun register(user: User): Long
 
     @Update
-    fun updateProfile(user: User): Int
+    suspend fun updateProfile(user: User): Int
 }
