@@ -94,7 +94,7 @@ class LoginFragment : Fragment() {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
                     },
-                text = "Login",
+                text = "Logins",
                 style = TextStyle(
                     color = Color.Black,
                     fontSize = 32.sp,
