@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvLogin"
-        android:text="Login"
+        android:text="MASHOK"
         android:textSize="32sp"
         android:fontFamily="@font/montserratbold"
         android:textColor="@color/black"
