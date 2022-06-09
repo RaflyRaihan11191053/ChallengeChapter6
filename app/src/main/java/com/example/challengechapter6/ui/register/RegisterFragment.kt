@@ -96,7 +96,7 @@ class RegisterFragment : Fragment() {
                         top.linkTo(parent.top)
                         start.linkTo(parent.start)
                     },
-                text = "Register",
+                text = "Registers",
                 style = TextStyle(
                     color = Color.Black,
                     fontSize = 32.sp,
